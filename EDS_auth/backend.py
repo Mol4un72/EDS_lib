@@ -1,33 +1,26 @@
-# django_ecp_auth/backend.py
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models import User
 from .validators import validate_signature
-from .exceptions import InvalidSignatureError, UserNotFoundError
-from typing import Optional
 
-class ECPBackend(BaseBackend):
-    """
-    Авторизація через ЕЦП
-    """
-    def authenticate(self, request, data: bytes = None, signature: bytes = None) -> Optional[User]:
-        from django.conf import settings
-
-        cert_path = settings.ECP_CERT_DIR
-        # Тут треба завантажити сертифікат користувача (псевдо)
-        cert = b"сертифікат"
-
-        try:
-            if validate_signature(data, signature, cert):
-                # шукаємо користувача за username або серією сертифіката
-                try:
-                    user = User.objects.get(username="example_user")
-                    return user
-                except User.DoesNotExist:
-                    raise UserNotFoundError("Користувача не знайдено")
-        except InvalidSignatureError as e:
+class EDSBackend(BaseBackend):
+    def authenticate(self, request, username=None, data=None, signature=None):
+        if not all([username, data, signature]):
             return None
 
-    def get_user(self, user_id: int) -> Optional[User]:
+        try:
+            # Знаходимо користувача за username
+            user = User.objects.get(username=username)
+            # Беремо його реальний ключ із профілю
+            public_key = user.eds_profile.public_key
+            
+            # Викликаємо реальну криптографічну перевірку
+            if validate_signature(data, signature, public_key):
+                return user
+                
+        except (User.DoesNotExist, Exception):
+            return None
+
+    def get_user(self, user_id):
         try:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:

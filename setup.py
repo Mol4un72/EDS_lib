@@ -7,6 +7,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "Django>=4.0",
+        "cryptography",
     ],
     python_requires=">=3.11",
     author="Name",
