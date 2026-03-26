@@ -1,3 +1,58 @@
+# ──────────────────────────────────────────────
+# 1. BUILD SYSTEM
+#    Only tools needed to BUILD the package go here.
+#    Runtime deps (Django, cryptography) do NOT belong here.
+# ──────────────────────────────────────────────
 [build-system]
-requires = ["setuptools>=42", "wheel", "cryptography>=3.0", "Django>=4.0"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
+
+
+# ──────────────────────────────────────────────
+# 2. PROJECT METADATA  (replaces / supersedes setup.py)
+# ──────────────────────────────────────────────
+[project]
+name = "EDS_auth"
+version = "0.1.0"
+description = "Django authentication backend via Electronic Digital Signature (EDS/ECP)"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Selector0073", email = "secret@email.com" },
+    { name = "Mov4un72", email = "secret@email.com" },
+    { name = "Nanochka", email = "secret@email.com" }
+]
+keywords = ["django", "authentication", "EDS", "ECP", "digital-signature", "PKI"]
+
+requires-python = ">=3.11"
+
+# Runtime dependencies
+dependencies = [
+    "Django>=4.2",
+    "cryptography>=41.0",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Security :: Cryptography",
+]
+
+
+# ──────────────────────────────────────────────
+# 3. PROJECT URLS
+# ──────────────────────────────────────────────
+[project.urls]
+Homepage       = "https://github.com/Selector0073/Hackathon2026"
+Documentation  = "https://hackathon2026docs.netlify.app/"
+"Bug Tracker"  = "https://github.com/Selector0073/Hackathon2026/issues"
